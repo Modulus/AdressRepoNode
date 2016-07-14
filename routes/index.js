@@ -14,7 +14,7 @@ router.get('/', function(req, res, next) {
 router.get('/address/:text', function (req, res) {
   var searchText = req.params['text'];
   if(searchText){
-    MongoClient.connect(url, function (err, db) {
+    mongoClient.connect(url, function (err, db) {
       db.command({text: 'address', search: searchText }, function(err, cb){
         console.log(cb.results);
         res.json(cb.results);
