@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var mongoClient = require('mongodb').MongoClient;
 
-var url = 'mongodb://localhost:27017/address';
+var url = 'mongodb://localhost:27017/demo';
 // Use connect method to connect to the Server
 
 /* GET home page. */
@@ -14,12 +14,17 @@ router.get('/', function(req, res, next) {
 router.get('/address/:text', function (req, res) {
   var searchText = req.params['text'];
   if(searchText){
+    console.log('Using searchText: '+searchText);
     mongoClient.connect(url, function (err, db) {
-      db.command({text: 'address', search: searchText }, function(err, cb){
-        console.log(cb.results);
-        res.json(cb.results);
+      var address = db.collection('address');
+      //console.log(address.find({}));
+
+      db.collection('address').find( {}).toArray(function(err, items){
+        console.log('Items: ' + items);
+        res.json(items);
       });
     });
+
   }
   else {
     res.status(500).send({error: 'Please specify a search text!'});
