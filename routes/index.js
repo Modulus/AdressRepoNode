@@ -11,18 +11,21 @@ router.get('/', function(req, res, next) {
   res.json({message: "Welcome to the api, you bastard"})
 });
 
-router.get('/address/:text', function (req, res) {
-  var searchText = req.params['text'];
+router.post('/search', function (req, res) {
+  console.log(req.body.text);
+  var searchText = req.body.text;
   if(searchText){
     console.log('Using searchText: '+searchText);
     mongoClient.connect(url, function (err, db) {
       var address = db.collection('address');
       //console.log(address.find({}));
-
-      db.collection('address').find( {}).toArray(function(err, items){
+      db.collection('address').find({$text: {$search: searchText, $caseSensitive: false}}).toArray(function (err, items) {
         console.log('Items: ' + items);
         res.json(items);
       });
+
+
+
     });
 
   }
@@ -30,6 +33,15 @@ router.get('/address/:text', function (req, res) {
     res.status(500).send({error: 'Please specify a search text!'});
   }
 
+});
+
+router.get('/all', function(req, res){
+  mongoClient.connect(url, function (err, db) {
+    db.collection('address').find({}).toArray(function (err, items) {
+      console.log('Items: ' + items);
+      res.json(items);
+    });
+  });
 });
 
 module.exports = router;
