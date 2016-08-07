@@ -2,8 +2,19 @@ var express = require('express');
 var router = express.Router();
 var mongoClient = require('mongodb').MongoClient;
 
-var url = 'mongodb://localhost:27017/demo';
-// Use connect method to connect to the Server
+function getConnectionString(){
+    switch(process.env.ENV){
+        case 'local':
+            return 'mongodb://localhost:27017/demo';
+        case 'dev':
+        case 'development':
+            return 'mongodb://db:27017/demo';
+        default:
+            return 'mongodb://localhost:27017/demo';
+
+    }
+}
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -12,6 +23,8 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/search', function (req, res) {
+  var url = getConnectionString();
+  console.log("Using connectionString: "+url);
   console.log(req.body.text);
   var searchText = req.body.text;
   if(searchText){
