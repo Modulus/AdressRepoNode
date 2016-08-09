@@ -49,6 +49,7 @@ router.post('/search', function (req, res) {
 });
 
 router.get('/all', function(req, res){
+  var url = getConnectionString();
   mongoClient.connect(url, function (err, db) {
     db.collection('address').find({}).toArray(function (err, items) {
       console.log('Items: ' + items);
