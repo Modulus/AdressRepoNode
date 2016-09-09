@@ -10,7 +10,7 @@ function getConnectionString(){
         case 'development':
             return 'mongodb://db:27017/demo';
         default:
-            return 'mongodb://localhost:27017/demo';
+            return 'mongodb://db:27017/demo';
 
     }
 }
