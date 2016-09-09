@@ -26,6 +26,8 @@ router.get('/', function(req, res, next) {
 router.get('/search', function(req, res){
   var searchText = req.query.text
   console.log(searchText);
+  var url = getConnectionString();
+  console.log("Using connectionString: "+url);
   if(searchText){
     console.log('Using searchText: '+searchText);
     mongoClient.connect(url, function (err, db) {
