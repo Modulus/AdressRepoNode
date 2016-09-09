@@ -36,8 +36,11 @@ router.get('/search', function(req, res){
         res.json(items);
       });
     });
+  }
+  else {
+    res.status(500).send({error: 'Please specify a search text!'});
+  }
 
-  res.json(req.query.text)
 });
 
 router.post('/search', function (req, res) {
